@@ -1,7 +1,8 @@
-#include <stdio.h>
+/* NOTE: This defines a function that takes as arguments two integers and
+ *       returns an integer; note that the beginning of a function is a valid
+ *       place to define a new local variable. */
+int add(int x, int y) {
+    int z = x + y;
 
-int main(void) {
-    printf("1 + 2: %d\n", 1 + 2);
-
-    return 0;
+    return z;
 }
