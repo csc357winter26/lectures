@@ -23,6 +23,22 @@ void swap(int *x, int *y) {
 }
 
 void reverse(int arr[], int len) {
-    (void)arr;
-    (void)len;
+    int i;
+
+    for (i = 0; i < len / 2; i++) {
+        /* NOTE: In C, arguments are always pass-by-value. The value of an
+         *       array is the address of its first element, so the array decays
+         *       into a pointer within the function. */
+        swap(&arr[i], &arr[len - 1 - i]);
+
+        /* NOTE: Indexing an array is equivalent to offsetting and dereferencing
+         *       its address, so the above dereferences a pointer only to ask
+         *       for that address back. Instead, it is equivalent to:
+         * swap(arr + i, arr + (len - 1 - i)) */
+
+        /* NOTE: A null pointer is guaranteed to be an invalid address for data,
+         *       and dereferencing a null pointer is likely to result in a
+         *       segfault when the program accesses memory outside its segment.
+         * swap(NULL, NULL); */
+    }
 }
