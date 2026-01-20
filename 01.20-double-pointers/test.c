@@ -14,17 +14,16 @@ void bar(int mat[][2]) {
     mat[0][1] = 6;  /* Interchangeable with "*(mat + (0 * 2) + 1) = 6". */
 }
 
-/* NOTE: The compiler sees "mat" as an ordinary pointer, but we the programmers
- *       know that it's actually the address of an (n x m) array, and we can do
- *       the appropriate indexing math for the compiler. */
+/* NOTE: The compiler sees "mat" as an ordinary integer pointer, but we the
+ *       programmers happen to know that it's actually the address of an
+ *       (n x m) array of integers, and we can the math for the compiler. */
 void bay(int *mat, int m) {
-    *(mat + (0 * m) + 1) = 7;  /* Equivalent to "mat[0][1] = 7". */
+    *(mat + (0 * m) + 1) = 7; /* Equivalent to "mat[0][1] = 7". */
 }
 
 int main(void) {
     int r0[] = {1, 2}, r1[] = {3, 4};
     int *mat1[2];
-
     int mat2[][2] = {{1, 2}, {3, 4}};
 
     mat1[0] = r0;
