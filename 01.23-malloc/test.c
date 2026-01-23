@@ -11,6 +11,18 @@ int main(void) {
     printf(" |- %p: %d\n", (void *)&arr[0], arr[0]);
     printf(" +- %p: %d\n", (void *)&arr[1], arr[1]);
 
+    /* NOTE: It makes no sense to free memory that isn't on the heap...
+     * free(&arr); */
+
+    /* NOTE: ...nor is it possible to free a portion of a block...
+     * free(arr + 1); */
+
+    /* NOTE: ...but without any free this would be a memory leak... */
+    free(arr);
+
+    /* NOTE: ...and it makes no sense to free something twice.
+     * free(arr); */
+
     return 0;
 }
 
