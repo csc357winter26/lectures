@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 
 int *pair(int, int);
@@ -14,7 +15,15 @@ int main(void) {
 }
 
 int *pair(int first, int second) {
-    int arr[2];
+    /* NOTE: Automatically allocated locals on the runtime stack must be
+     *       deallocated on return, so returning this array retuns a pointer
+     *       to memory that is effectively garbage.
+     * int arr[2]; */
+
+    /* NOTE: Dynamically allocated date on the heap can be allocated at runtime
+     *       and will not be deallocated on return. Recall that we may use
+     *       array syntax on pointers. */
+    int *arr = (int *)malloc(sizeof(int) * 2);
 
     arr[0] = first;
     arr[1] = second;
