@@ -16,10 +16,10 @@ int main(void) {
     return 0;
 }
 
-/* NOTE: The code for finding the max is very similar to finding the sum, just
- *       with a different operation within the loop. We can reduce code
- *       duplication by having this function take as argument a pointer to
- *       another function to perform that combining operation. */
+/* NOTE: Finding the sum is very similar to finding the max element: both
+ *       involve repeatedly combining two elements in some way. To avoid
+ *       duplicating code, we can pass a pointer to a function that does that
+ *       combining operation. */
 int reduce(int arr[], int n, int (*fn)(int, int)) {
     int val = arr[0], i;
 
