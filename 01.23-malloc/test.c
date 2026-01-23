@@ -27,14 +27,14 @@ int main(void) {
 }
 
 int *pair(int first, int second) {
-    /* NOTE: This is never safe. Automatically allocated locals on the runtime
-     *       stack must be deallocated on return, so this will end up returning
-     *       a pointer to memory that is no longer in use.
+    /* NOTE: Automatically allocated locals on the runtime stack must be
+     *       deallocated on return, so returning this array retuns a pointer
+     *       to memory that is effectively garbage.
      * int arr[2]; */
 
-    /* NOTE: Instead, dynamically allocated data on the heap can be allocated
-     *       at runtime and will not be deallocated on return. Recall that
-     *       we are allowed to use array syntax on pointers. */
+    /* NOTE: Dynamically allocated date on the heap can be allocated at runtime
+     *       and will not be deallocated on return. Recall that we may use
+     *       array syntax on pointers. */
     int *arr = (int *)malloc(sizeof(int) * 2);
 
     arr[0] = first;
