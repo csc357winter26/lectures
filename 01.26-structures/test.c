@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include "test.h"
 
-/* NOTE: Arguments are always pass-by-value, and the value of a structure is
- *       the whole structure, so functions receive a copy of their structure
- *       arguments. If this function wishes to pass back an updated structure,
- *       it must return the entire structure. */
+/* NOTE: The value of a structure is the entire structure, so functions get
+ *       copies of their structure arguments, and must return those copies to
+ *       communicate any changes back to their callers. */
 Pair foo(Pair pair) {
     pair.first = 3;
     pair.second = 4;
@@ -16,9 +15,9 @@ Pair foo(Pair pair) {
     return pair;
 }
 
-/* NOTE: Alternatively, we always have the option of emulating pass-by-reference
- *       behavior by passing a pointer instead. Note that the dot operator has
- *       precedence over the unary star operator. */
+/* NOTE: Alternatively, we can always emulate pass-by-reference behavior by
+ *       passing a pointer instead. Note that the dot operator has precedence
+ *       over the unary star operator. */
 void bar(Pair *pair) {
     (*pair).first = 5; /* Interchangeable with "pair->first = 5;". */
     (*pair).second = 6; /* Interchangeable with "pair->second = 6;". */
