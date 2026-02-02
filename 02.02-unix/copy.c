@@ -13,10 +13,10 @@ int main(int argc, char *argv[]) {
     char buf[SIZE];
     int n, src, dest;
 
-    /* NOTE: The system call open takes a bitmask of options instead of a
+    /* NOTE: The system call "open" takes a bitmask of options instead of a
      *       string, forces us to provide new files' permissions instead of
-     *       using the default, and returns an index into a behind-the-scenes
-     *       array of open files instead of a FILE structure. */
+     *       using the default, and returns a "file descriptor" that indexes a
+     *       behind-the-scenes "file table" instead of a FILE structure. */
     src = open(argv[1], O_RDONLY);
     dest = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC,
                 S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
