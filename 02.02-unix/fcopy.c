@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+/* NOTE: Standard library functions encapsulate the most commonly desired
+ *       functionality. For example, even if we ask for 16 bytes, fread will
+ *       read a much larger chunk of data into memory. The next time we ask for
+ *       16 bytes, fread already has them in memory. */
 #define SIZE 16
 
 int main(int argc, char *argv[]) {
