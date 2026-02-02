@@ -1,4 +1,8 @@
-CFLAGS = -Wall -Wextra -Werror -ansi -pedantic
+# NOTE: This declares a variable named "CFLAGS" containing all of the flags we
+#       intend to pass to the compiler. As programmers who ostensibly now know
+#       what we are doing, we can drop the -Werror flag and switch to the
+#       latest supported GNU 11 standard.
+CFLAGS = -Wall -Wextra -std=gnu11 -pedantic
 
 all: copy fcopy
 
