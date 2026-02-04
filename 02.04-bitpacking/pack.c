@@ -25,10 +25,10 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    /* NOTE: If the standard library can do what we want, there is no reason to
-     *       reinvent the wheel. In this case, our input is textual characters
-     *       and output is individual bytes, both of which can be handled by the
-     *       standard library functions. */
+    /* NOTE: If the standard library can already do what we need, there is no
+     *       reason to reinvent the wheel. In this case, our input is 8-bit
+     *       textual characters and our output is 8-bit bytes, both of which
+     *       can already be handled by standard library functions. */
 
     while ((n = fread(buf, sizeof(char), 8, src)) > 0) {
         for (; n < 8; n++) {
@@ -51,7 +51,7 @@ unsigned char stob(char *bits) {
     /* NOTE: This function needs to take as input a string of eight characters,
      *       each '0' or '1', and "pack" the corresponding eight bits into a
      *       single byte. Note that the first character in the string is the
-     *       most significant bit in the byte. */
+     *       most significant bit in the byte; character 0 is bit 7. */
 
     for (mask = 1 << 7; mask > 0; mask >>= 1) {
         if (*(bits++) == '1') {
