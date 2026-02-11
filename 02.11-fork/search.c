@@ -31,12 +31,10 @@ int main(int argc, char *argv[]) {
      *       that they execute simultaneously, then wait for them later. */
 
     for (i = 2; i < argc; i++) {
-        printf("%d is the parent of %d.\n", getpid(), pid);
         pid = wait(&status);
 
         if (WIFEXITED(status)) {
-            printf("%d exited normally with status %d.\n",
-             pid, WEXITSTATUS(status));
+            printf("%d exited with status %d.\n", pid, WEXITSTATUS(status));
         }
         else {
             printf("%d exited abnormally.\n", pid);
