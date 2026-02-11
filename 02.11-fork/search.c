@@ -1,3 +1,6 @@
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,9 +10,36 @@
 int fsearch(char *, char *);
 
 int main(int argc, char *argv[]) {
-    int status = fsearch(argv[1], argv[2]);
+    int status = 0, i;
+    pid_t pid;
 
-    return status;
+    for (i = 2; i < argc; i++) {
+        if ((pid = fork()) == 0) {
+            printf("%d is the child of %d.\n", getpid(), getppid());
+            exit(fsearch(argv[1], argv[i]));
+        }
+        else {
+            printf("%d is the parent of %d.\n", getpid(), pid);
+        }
+    }
+
+    /* NOTE: It is the parent's responsibility to wait for each and every one
+     *       of its children. In this case, however, we can't wait for a child
+     *       until after all children have been forked; we need the children to
+     *       execute simultaneously. */
+
+    for (i = 2; i < argc; i++) {
+        pid = wait(&status);
+
+        if (WIFEXITED(status)) {
+            printf("%d exited with status %d.\n", pid, WEXITSTATUS(status));
+        }
+        else {
+            printf("%d exited abnormally.\n", pid);
+        }
+    }
+
+    return EXIT_SUCCESS;
 }
 
 /* fsearch: Prints occurrences of a string in a file. */
