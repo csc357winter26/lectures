@@ -7,15 +7,30 @@
 
 #define LINELEN 81
 
-int fsearch(char *, char *);
-
 int main(int argc, char *argv[]) {
     int i, tmp, status = EXIT_FAILURE;
     pid_t pid;
 
     for (i = 2; i < argc; i++) {
         if ((pid = fork()) == 0) {
-            exit(fsearch(argv[1], argv[i]));
+            /* NOTE: There already exists a program that searches files. We
+             *       don't need to rewrite that code -- we certainly don't want
+             *       to have to write both parent and child code in the same
+             *       program -- we can just replace the child with "grep".
+             * exit(fsearch(argv[1], argv[i])); */
+
+            /* NOTE: Here, we use "execLP" because we want to pass a List of
+             *       arguments and we want the OS to search the system Path for
+             *       the executable. Note that, by convention, the first
+             *       argument is always the name of the executable. */
+            execlp("grep", "grep", argv[1], argv[i], NULL);
+
+            /* NOTE: A successful call to "exec" never returns; any code below
+             *       effectively ceases to exist. We need to replace the child
+             *       rather than the parent, because the parent needs to go on
+             *       to wait for the child. */
+            perror("execlp");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -26,22 +41,5 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    return status;
-}
-
-/* fsearch: Prints occurrences of a string in a file. */
-int fsearch(char *str, char *fname) {
-    int status = EXIT_FAILURE;
-    char buf[LINELEN];
-    FILE *file = fopen(fname, "r");
-
-    while (fgets(buf, LINELEN, file) != NULL) {
-        if (strstr(buf, str) != NULL) {
-            printf("%s: %s", fname, buf);
-            status = EXIT_SUCCESS;
-        }
-    }
-
-    fclose(file);
     return status;
 }
