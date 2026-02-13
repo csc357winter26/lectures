@@ -19,16 +19,16 @@ int main(int argc, char *argv[]) {
              *       program -- we can just replace the child with "grep".
              * exit(fsearch(argv[1], argv[i])); */
 
-            /* NOTE: Here, we use "execLP" because we want to pass a List of
-             *       arguments and we want the OS to search the system Path for
-             *       the executable. Note that, by convention, the first
+            /* NOTE: In this case, we need "execLP"; we are going to pass a
+             *       List of arguments, and we need the OS to search the Path
+             *       for the "grep" executable. By convention, the first
              *       argument is always the name of the executable. */
             execlp("grep", "grep", argv[1], argv[i], NULL);
 
             /* NOTE: A successful call to "exec" never returns; any code below
-             *       effectively ceases to exist. We need to replace the child
-             *       rather than the parent, because the parent needs to go on
-             *       to wait for the child. */
+             *       effectively ceases to exist. The only way to get here is
+             *       if "exec" failed. This also means we need to replace the
+             *       child; the parent needs to go on to wait. */
             perror("execlp");
             exit(EXIT_FAILURE);
         }
