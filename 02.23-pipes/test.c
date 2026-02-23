@@ -11,8 +11,8 @@ int main(void) {
     pipe(fds);
 
     if ((pid = fork()) == 0) {
-        int n;
         char buf[5];
+        int n;
 
         close(fds[1]);
 
@@ -34,7 +34,7 @@ int main(void) {
         close(fds[0]);
 
         printf("%d is the parent of %d.\n", getpid(), pid);
-        write(fds[1], "Hello, child!\n", 14);
+        write(fds[1], "Hello, child!", 13);
 
         /* NOTE: ...in the case of pipes, closing unneeded file descriptors is
          *       not just a matter of cleanliness or best practice, it's also
