@@ -4,10 +4,10 @@
 int main(void) {
     char buf[16];
 
-    /* NOTE: This program expects to use the existing stdin/stdout streams.
-     *       If we replace those streams with the ends of pipes, then we can
-     *       "trick" this program into reading from and writing to those pipes
-     *       instead. */
+    /* NOTE: This program expects to use the existing stdin/stdout streams. If
+     *       we then replace the corresponding file descriptors with the ends
+     *       of pipes, we can "trick" this program into reading from and
+     *       writing to those pipes instead. */
 
     fgets(buf, 16, stdin);
     buf[strlen(buf) - 1] = '\0';
