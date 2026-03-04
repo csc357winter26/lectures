@@ -8,7 +8,7 @@
 int main(int argc, char *argv[]) {
     struct addrinfo hints = {0}, *addr;
     int fd, client, n;
-    char buf[4];
+    char buf[5];
 
     /* NOTE: This program (the server) will already be running, passively
      *       waiting for other programs (the clients) to connect. Thus, the
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 
     /* NOTE: Essentially, the NULL here indicates that the OS can just fill out
      *       one of our own addresses, since we're not planning to connect to
-     *       someone else's address, but we do need to specify a port. */
+     *       someone else's address, but we do need to reserve a port. */
 
     getaddrinfo(NULL, argv[1], &hints, &addr);
     fd = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
@@ -38,9 +38,9 @@ int main(int argc, char *argv[]) {
 
     client = accept(fd, NULL, NULL);
 
-    /* NOTE: When a connection is accepted, a new socket is created. It is this
-     *       new socket that is used to communicate with the accepted client,
-     *       thus leaving the existing socket to listen for more clients. */
+    /* NOTE: Accepting a connection creates a new socket for communication with
+     *       the corresponding client, thus leaving the original bound socket
+     *       free to continue listening for additional clients. */
 
     while ((n = read(client, buf, 4)) > 0) {
         buf[n] = '\0';

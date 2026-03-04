@@ -1,6 +1,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
+#include <unistd.h>
 #include <netdb.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -25,9 +25,9 @@ int main(int argc, char *argv[]) {
     fd = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
     connect(fd, addr->ai_addr, addr->ai_addrlen);
 
-    /* NOTE: It is generally possible that the entire buffer cannot be sent out
-     *       all at once. This does not necessarily mean anything has gone
-     *       wrong, but it is our responsibility to try sending again. */
+    /* NOTE: It is generally possible that the entire buffer cannot be sent at
+     *       once. This does not necessarily mean something went wrong, but it
+     *       is our responsibility to try to send the rest later. */
 
     i = 0;
     while (i < 14) {
