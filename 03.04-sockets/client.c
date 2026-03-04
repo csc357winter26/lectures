@@ -7,6 +7,8 @@
 
 int main(int argc, char *argv[]) {
     struct addrinfo hints = {0}, *addr;
+    int fd, i;
+    char buf[15] = "Hello, server!";
 
     /* NOTE: This program (the client) will actively attempt to connect to the
      *       other program (the server), which requires knowing the server's
@@ -20,15 +22,19 @@ int main(int argc, char *argv[]) {
      *       "getaddrinfo" will work rather than iterating over the linked list
      *       of potentially multiple addresses that could be tried. */
 
-    uint32_t ipaddr = ntohl(
-     ((struct sockaddr_in *)addr->ai_addr)->sin_addr.s_addr);
+    fd = socket(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
+    connect(fd, addr->ai_addr, addr->ai_addrlen);
 
-    printf("%d.%d.%d.%d\n",
-     (ipaddr & 0xFF000000) >> 24,
-     (ipaddr & 0x00FF0000) >> 16,
-     (ipaddr & 0x0000FF00) >> 8,
-     (ipaddr & 0x000000FF) >> 0);
+    /* NOTE: It is generally possible that the entire buffer cannot be sent out
+     *       all at once. This does not necessarily mean anything has gone
+     *       wrong, but it is our responsibility to try sending again. */
 
+    i = 0;
+    while (i < 14) {
+        i += write(fd, buf + i, 14 - i);
+    }
+
+    close(fd);
     freeaddrinfo(addr);
 
     return EXIT_SUCCESS;
