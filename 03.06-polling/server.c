@@ -8,7 +8,7 @@
 int main(int argc, char *argv[]) {
     struct addrinfo hints = {0}, *addr;
     int fd, client, n;
-    char buf[5];
+    char buf[80];
 
     /* NOTE: This program (the server) will already be running, passively
      *       waiting for other programs (the clients) to connect. Thus, the
@@ -24,9 +24,8 @@ int main(int argc, char *argv[]) {
     listen(fd, 1);
 
     client = accept(fd, NULL, NULL);
-    while ((n = read(client, buf, 4)) > 0) {
-        buf[n] = '\0';
-        printf("Client sent \"%s\".\n", buf);
+    while ((n = read(client, buf, 80)) > 0) {
+        write(STDOUT_FILENO, buf, n);
     }
 
     close(client);
