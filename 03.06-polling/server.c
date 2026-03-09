@@ -27,9 +27,9 @@ int main(int argc, char *argv[]) {
     bind(fd, addr->ai_addr, addr->ai_addrlen);
     listen(fd, 16);
 
-    /* NOTE: For simplicity, we assume that we only need to handle up to 16
-     *       clients, which means we need to be able to poll up to 17 file
-     *       descriptors: the 16 clients and the 1 listening socket. */
+    /* NOTE: For simplicity, we'll assume that we only need to handle 16
+     *       clients, which requires 17 descriptors: the 16 clients and the
+     *       1 original listening socket. */
 
     clients[0].fd = fd;
     clients[0].events = POLLIN;
@@ -37,24 +37,25 @@ int main(int argc, char *argv[]) {
     m = 1;
 
     while (poll(clients, m, m > 1 ? -1 : 10000) > 0) {
-        /* NOTE: Since it is possible that some file descriptors are more
-         *       important than others, "poll" just returns the number of file
-         *       descriptors that are ready for I/O; we must search the array. */
+        /* NOTE: Since it is generally possible that some file descriptors are
+         *       more important than others, "poll" only tells us how many are
+         *       ready for I/O, rather than which ones are ready for I/O. */
         for (i = 0; i < m; i++) {
             if (clients[i].revents & POLLIN) {
                 if (i == 0) {
-                    /* NOTE: If the listening socket has data to read, use that
-                     *       socket to accept a new connection and add the new
-                     *       socket to the array of polled descriptors. */
+
+                    /* NOTE: If the listening socket has data available, we'll
+                     *       accept a new client and add that client's socket
+                     *       to the array of polled descriptors. */
                     clients[m].fd = accept(fd, NULL, NULL);
                     clients[m].events = POLLIN;
                     fcntl(clients[m].fd, F_SETFL, O_NONBLOCK);
                     m++;
                 }
                 else {
-                    /* NOTE: If it's a client socket that has data to read,
-                     *       echo all of that data to the terminal. With the
-                     *       socket set to non-blocking... */
+                    /* NOTE: If a client socket has data availabe, we'll read
+                     *       that data and echo it to the terminal. With the
+                     *       client socket set to non-blocking... */
                     while ((n = read(clients[i].fd, buf, 80)) > 0) {
                         write(STDOUT_FILENO, buf, n);
                     }
