@@ -30,10 +30,10 @@ void *f(void *ptr) {
              *       before entering the critical section... */
             pthread_mutex_lock(&lock);
 
-            /* NOTE: ...by definition, only one thread can possess the mutex at
-             *       a time. Thus, only thread can return from "pthread_mutex_
-             *       lock" at a time, thus, only one thread can execute the
-             *       following increment at a time. */
+            /* NOTE: ...by definition, only one thread may possess the mutex at
+             *       a time. Thus, only one thread may return from the above
+             *       call at a time, thus, only one thread may execute the
+             *       below lines at a time. */
             count++;
 
             pthread_mutex_unlock(&lock);
@@ -42,7 +42,6 @@ void *f(void *ptr) {
 
     return NULL;
 }
-
 
 int main(void) {
     int arr[LENGTH], i;
