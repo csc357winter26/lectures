@@ -13,12 +13,10 @@ List *lstcreate() {
 
 /* lstdestroy: Destroys an existing linked list. */
 void lstdestroy(List *lst) {
-    Node *cur = lst->head;
-
-    while (cur != NULL) {
-        Node *next = cur->next;
-        free(cur);
-        cur = next;
+    while (lst->head != NULL) {
+        Node *next = lst->head->next;
+        free(lst->head);
+        lst->head = next;
     }
 
     free(lst);
@@ -46,19 +44,22 @@ int lstadd(List *lst, int idx, void *val) {
         lst->head = node;
     }
     else {
-        Node *cur = lst->head;
+        Node *prev = lst->head;
         int i;
 
         for (i = 0; i < idx - 1; i++) {
-            cur = cur->next;
+            prev = prev->next;
         }
 
-        node->next = cur->next;
-        cur->next = node;
+        node->next = prev->next;
+        prev->next = node;
     }
 
     (lst->size)++;
 
+    /* NOTE: This function returns an error code. If, for example, it was
+     *       possible for idx to be out-of-bounds, then we could check for that
+     *       and potentially return some non-zero number instead. */
     return 0;
 }
 
