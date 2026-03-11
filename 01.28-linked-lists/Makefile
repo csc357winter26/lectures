@@ -1,16 +1,17 @@
 list.o: list.c list.h
 	gcc -Wall -Wextra -Werror -ansi -pedantic -c list.c
 
-# NOTE: With the -Werror flag, warnings would prevent compilation, but if we
-#       are still at the testing and debugging stage, arguably warnings are
-#       okay as long as we eventually address them -- some of them only show up
-#       because we haven't implemented the corresponding functions yet.
+# NOTE: With the -Werror flag, warnings like unused parameters would prevent
+#       compilation. Arguably, if we are still in the process of testing and
+#       debugging, that's okay; it might just mean that we haven't implemented
+#       the corresponding functions yet.
 debug:
 	gcc -Wall -Wextra -ansi -pedantic -g -c list.c
 
-# NOTE: Memory leaks typically don't immediately cause fatal errors, but we
-#       still want to be checking for them throughout the unit testing process,
-#       just to catch them before they become more serious.
+# NOTE: Even if all the tests that we expect to pass are passing, we also need
+#       to ensure that we haven't inadvertently leaked any memory. Throughout
+#       the testing process, we want to make sure we address any leaks sooner
+#       rather than later.
 test: debug
 	gcc -Wall -Wextra -ansi -pedantic -g listtests.c list.o
 	valgrind --leak-check=full --show-leak-kinds=all ./a.out

@@ -35,6 +35,7 @@ int lstset(List *lst, int idx, void *val) {
 /* lstadd: Adds an element to a linked list. */
 int lstadd(List *lst, int idx, void *val) {
     Node *node = (Node *)malloc(sizeof(Node));
+
     node->val = val;
     node->next = NULL;
 
